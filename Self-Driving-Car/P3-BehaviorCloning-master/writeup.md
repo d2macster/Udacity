@@ -66,7 +66,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, left and right cameras with augmented steering angles, and artificial shifts to the data ( with corresponding streeting angle adjastements).
 
 For details about how I created the training data, see the next section. 
 
@@ -74,9 +74,9 @@ For details about how I created the training data, see the next section.
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+For my experiments I used data set provided by udacity, as well as augmented it with extra lapses of driving data collected myself on track # 2 (lines 200 - 217). As it turned out later, the first data set was totally sufficient.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+The first step I tried to recreate NVIDIA network. I forgot pooling layers and ended up with a network which didt fit on GPU instance. This lead to debuging, network visualisation, fixing errors. This project had many degrees of freedom, and i wanted to start with a workable network.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
