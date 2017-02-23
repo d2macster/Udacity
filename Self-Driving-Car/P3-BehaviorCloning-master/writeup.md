@@ -32,7 +32,7 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* writeup.md summarizing the results
 
 ####2. Submssion includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -42,25 +42,27 @@ python drive.py model.h5
 
 ####3. Submssion code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model. The code uses batch generator for training the model, as well as a generator for validation data set. Thus we can use big data sets which do not fit in memory for training 
 
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model arcthiecture has been employed
+I tried to copy as close as possible NVIDIA model, with a couple deviations.
+Instead of YUV transformation i used original image colors, and instead of subsampling I used pooling layer. After searching the publications on this topic, i found that pooling outperforms subsampling, and thus chose pooling.
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 24 and 64 (model.py lines 141 - 180).
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model includes ELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer. Also I use dropout regulsrlisation to prevent overfitting 
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout layers in order to reduce overfitting. Also I use continuous data augmentation , like changing image brightness ( line 60), do random image translations (line 70) and flip images (line 81). Thus we obtain pretty big data set of not repeating data points which minimizes the chance of overfitting. 
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 240).
 
 ####4. Appropriate training data
 
