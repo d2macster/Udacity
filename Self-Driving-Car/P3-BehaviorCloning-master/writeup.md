@@ -76,23 +76,7 @@ Training data was chosen to keep the vehicle driving on the road. I used a combi
 
 For my experiments I started with a data set provided by Udacity. I also collected data from 4 lapses of driving on track # 2 (lines 200 - 217). As it turned out later, the first data set was totally sufficient.
 
-The first step I tried to recreate NVIDIA network. This project had many degrees of freedom, and i wanted to start with a working network. My major effort was in image processing / image augmentation.
-
-I started with the exploration of the udacity data set and understood that most data points have steering angle equal 0. This is totally normal because we want to stay close as possible to the middle of the lane. My first model trained only on center images tried to maintain steering angle close to 0 and went off track. The model was trying to minimize RMSE, and that would happen when the model would output 0 most of the time. 
-
-The situation started to improve when I added left and right camera images and adjasted values for steering angle, which was 
-``` python
-angle = k * steering + delta
-``` 
-
-(for left image) and 
-
-``` python
-angle = k * steering - delta
-```
-
-(for right image).
-
+The first step I tried to recreate NVIDIA network. This project had many degrees of freedom, and i wanted to start with a working network. It turns out that the major effort and effect gains came from image augmentation, not network architecture itself.
 
 At the end of the process, the vehicle is able to drive autonomously around both tracks autonomously.
 
@@ -116,13 +100,26 @@ Here is a visualization of the architecture
 
 ![alt text][image1]
 
-####3. Creation of the Training Set & Training Process
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+I used validation set to determine how many training epochs is enough. Turns out, 2 epochs was sufficient, after that validation error would plateau and not decrease substantially.
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+####3. Creation of the Training Set & Training Process
+
+I started with the exploration of the udacity data set and understood that most data points have steering angle equal 0. This is totally normal because we want to stay close as possible to the middle of the lane. My first model trained only on center images tried to maintain steering angle close to 0 and went off track. The model was trying to minimize RMSE, and that would happen when the model would output 0 most of the time. 
+
+The situation started to improve when I added left and right camera images and adjusted values for steering angle, which was 
+``` python
+angle = k * steering + delta
+``` 
+
+(for left image) and 
+
+``` python
+angle = k * steering - delta
+```
+
+(for right image).
 
 ![alt text][image3]
 ![alt text][image4]
