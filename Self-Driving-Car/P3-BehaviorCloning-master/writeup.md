@@ -83,7 +83,9 @@ I started with the exploration of the udacity data set and understood that most 
 The situation started to improve when I added left and right camera images and adjasted values for steering angle, which was 
 ``` python
 angle = k * steering + delta
-``` (for left image) and 
+``` 
+
+(for left image) and 
 
 ``` python
 angle = k * steering - delta
