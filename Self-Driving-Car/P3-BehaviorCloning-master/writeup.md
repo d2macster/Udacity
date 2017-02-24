@@ -133,5 +133,8 @@ Left and right camera images provided initial "recovery" data points, from which
 
 In addition to left and right images, i added a few more trasformations:
 
-1. flipping image at random along x axis and multiplying steering angle by -1. this simple technique doubled training set and helped 
+1. flipping image at random along x axis and multiplying steering angle by -1. this doubled effective data set
+2. random image translation along x axis and correction stering angle. this provided with a lot of "recovery" data, and the model would be more effective to return car back on track after it approach the track boundary
+3. brightness augmentation - helped to be able to drive on track 2 using training examples only from track 1
+4. image cropping. I experimented a lot with this approach and discovered that driving stability can be improved by chopping off the bottom and the top part of the image. However, it is beneficial to not chop any pixels on the left and on the right of the image. Othwerwose the car starts loosing important recovery informaton if it approaches track boundary. 
 
