@@ -34,6 +34,7 @@ My project includes the following files:
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * writeup.md summarizing the results
+* track1.mp4 and track2.mp4 - recordings of autonomous car driving on both tracks
 
 ####2. Submssion includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -43,23 +44,23 @@ python drive.py model.h5
 
 ####3. Submssion code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model. The code uses batch generator for training the model, as well as a generator for validation data set. Thus we can use big data sets which do not fit in memory for training 
+The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model. The code uses batch generator for training the model, as well as a generator for validation data set. Thus we can use big data sets which do not fit in memory for training and validation.
 
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model arcthiecture has been employed
 I tried to copy as close as possible NVIDIA model, with a couple deviations.
-Instead of YUV transformation i used original image colors, and instead of subsampling I used pooling layer. After searching the publications on this topic, i found that pooling outperforms subsampling, and thus chose pooling.
+Instead of YUV transformation i used original image colors, and instead of subsampling I used pooling layer. After searching the publications on this topic, I found that pooling outperforms subsampling, and thus chose pooling.
 
 My model consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 24 and 64 (model.py lines 141 - 180).
 
-The model includes ELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer. Also I use dropout regulsrlisation to prevent overfitting 
+The model includes ELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer. Also I use dropout regularlisation to prevent overfitting.
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting. Also I use continuous data augmentation , like changing image brightness ( line 60), do random image translations (line 70) and flip images (line 81). Thus we obtain pretty big data set of not repeating data points which minimizes the chance of overfitting. 
+The model contains dropout layers in order to reduce overfitting. Also I use continuous data augmentation , like changing image brightness ( line 60), random image translations (line 70) and flip images (line 81). We obtain pretty big data set of not repeating images which minimizes the chance of overfitting. 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on both tracks.
 
 ####3. Model parameter tuning
 
@@ -69,25 +70,20 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, left and right cameras with augmented steering angles, and artificial shifts to the data ( with corresponding streeting angle adjastements).
 
-For details about how I created the training data, see the next section. 
-
 ###Model Architecture and Training Strategy
 
 ####1. Solution Design Approach
 
-For my experiments I used data set provided by udacity, as well as augmented it with extra lapses of driving data collected myself on track # 2 (lines 200 - 217). As it turned out later, the first data set was totally sufficient.
+For my experiments I started with a data set provided by Udacity. I also collected data from 4 lapses of driving on track # 2 (lines 200 - 217). As it turned out later, the first data set was totally sufficient.
 
-The first step I tried to recreate NVIDIA network. I forgot pooling layers and ended up with a network which didt fit on GPU instance. This lead to debuging, network visualisation, fixing errors. This project had many degrees of freedom, and i wanted to start with a workable network.
+The first step I tried to recreate NVIDIA network. This project had many degrees of freedom, and i wanted to start with a working network. My major effort was in image processing / image augmentation.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+I started with the exploration of the udacity data set and understood that most data points have steering angle equal 0. This is totally normal because we want to stay close as possible to the middle of the lane. My first model trained only on center images tried to maintain steering angle close to 0 and went off track. The model was trying to minimize RMSE, and that would happen when the model would output 0 most of the time. 
 
-To combat the overfitting, I modified the model so that ...
+The situation started to improve when I added left and right camera images and adjasted values for steering angle, which was angle = k*steering + delta (for left image) and angle = k*steering - delta (for right image).
 
-Then I ... 
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+At the end of the process, the vehicle is able to drive autonomously around both tracks autonomously.
 
 ####2. Final Model Architecture
 
