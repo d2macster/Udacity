@@ -80,7 +80,16 @@ The first step I tried to recreate NVIDIA network. This project had many degrees
 
 I started with the exploration of the udacity data set and understood that most data points have steering angle equal 0. This is totally normal because we want to stay close as possible to the middle of the lane. My first model trained only on center images tried to maintain steering angle close to 0 and went off track. The model was trying to minimize RMSE, and that would happen when the model would output 0 most of the time. 
 
-The situation started to improve when I added left and right camera images and adjasted values for steering angle, which was angle = k*steering + delta (for left image) and angle = k*steering - delta (for right image).
+The situation started to improve when I added left and right camera images and adjasted values for steering angle, which was 
+``` python
+angle = k * steering + delta
+``` (for left image) and 
+
+``` python
+angle = k * steering - delta
+```
+
+(for right image).
 
 
 At the end of the process, the vehicle is able to drive autonomously around both tracks autonomously.
