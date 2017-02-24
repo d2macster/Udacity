@@ -19,7 +19,7 @@ The goals / steps of this project are the following:
 [image5]: ./images/right.jpg "Right Image"
 [image6]: ./images/augment_0.jpg "Augmented Image 1"
 [image7]: ./images/augmented_6.jpg "Augmented Image 2"
-[image8]: ./images/augmented_7.jpg "Augmented Image 3"
+[image8]: ./images/augmented_9.jpg "Augmented Image 3"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
