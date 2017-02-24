@@ -13,13 +13,13 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./images/model.png "Model Visualization"
-[image2]: ./images/train_cv_error.png "Train and CV error"
+[image2]: ./images/train_cv.png "Train and CV error"
 [image3]: ./images/center.jpg "Center Image"
 [image4]: ./images/left.jpg "Left Image"
 [image5]: ./images/right.jpg "Right Image"
 [image6]: ./images/augment_0.jpg "Augmented Image 1"
-[image7]: ./images/augmented_6.jpg "Augmented Image 2"
-[image8]: ./images/augmented_9.jpg "Augmented Image 3"
+[image7]: ./images/augment_6.jpg "Augmented Image 2"
+[image8]: ./images/augment_9.jpg "Augmented Image 3"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -115,6 +115,7 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 
 ![alt text][image6]
 ![alt text][image7]
+![alt text][image8]
 
 Etc ....
 
