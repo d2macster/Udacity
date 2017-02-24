@@ -12,13 +12,14 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./model.png "Model Visualization"
-[image2]: ./train_cv_error.png "Train and CV error"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image1]: ./images/model.png "Model Visualization"
+[image2]: ./images/train_cv_error.png "Train and CV error"
+[image3]: ./images/center.jpg "Center Image"
+[image4]: ./images/left.jpg "Left Image"
+[image5]: ./images/right.jpg "Right Image"
+[image6]: ./images/augment_0.jpg "Augmented Image 1"
+[image7]: ./images/augmented_6.jpg "Augmented Image 2"
+[image8]: ./images/augmented_7.jpg "Augmented Image 3"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
