@@ -98,9 +98,19 @@ At the end of the process, the vehicle is able to drive autonomously around both
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 141-180) consisted of a convolution neural network with the following layers and layer sizes:
+1. Normalisation layer: 
+2. Conv layer with kernel 5x5, output shape 31x98x24, followed by max pooling, elu, and dropout
+3. Conv layer with kernel 5x5, output shape 14x47x36, followed by max pooling, elu, and dropout
+4. Conv layer with kernel 5x5, output shape 5x22x48, followed by max pooling, elu, and dropout
+5. Conv layer with kernel 3x3, output shape 3x20x64, followed by elu, and dropout
+6. Conv layer with kernel 3x3, output shape 1x18x64, followed by elu, and dropout
+7. fully connected with 100 outputs and dropout
+8. fully connected with 50 outputs and dropout
+9. fully connected with 10 outputs and dropout
+dropout value was set to 0.25
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+Here is a visualization of the architecture
 
 ![alt text][image1]
 
