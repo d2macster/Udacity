@@ -4,7 +4,7 @@ The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior / use provided data set
 * Visualize obtained data, discuss potential pitfalls of applying learning using that data 
 * Augment collected data
-* Build a convolution neural network in Keras that predicts steering angles from images
+* Build a convolutional neural network in Keras that predicts steering angles from images
 * Train and validate the model with a training and validation set
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
@@ -32,25 +32,25 @@ The goals / steps of this project are the following:
 My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
+* model.h5 containing a trained convolutional neural network 
 * writeup.md summarizing the results
 * track1.mp4 and track2.mp4 - recordings of autonomous car driving on both tracks
 
-####2. Submssion includes functional code
+####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
 python drive.py model.h5
 ```
 
-####3. Submssion code is usable and readable
+####3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model. The code uses batch generator for training the model, as well as a generator for validation data set. Thus we can use big data sets which do not fit in memory for training and validation.
+The model.py file contains the code for training and saving the convolutional neural network. The file shows the pipeline I used for training and validating the model. The code uses batch generator for training the model, as well as a generator for validation data set. Thus we can use big data sets which do not fit in memory for training and validation.
 
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model arcthiecture has been employed
-I tried to copy as close as possible NVIDIA model, with a couple deviations.
-Instead of YUV transformation i used original image colors, and instead of subsampling I used pooling layer. After searching the publications on this topic, I found that pooling outperforms subsampling, and thus chose pooling.
+I tried to copy as close as possible NVIDIA model, with a couple of deviations.
+Instead of YUV transformation I used original image colors, and instead of subsampling I used pooling layer. After searching the publications on this topic, I found that pooling outperforms subsampling, and thus chose pooling.
 
 My model consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 24 and 64 (model.py lines 141 - 180).
 
@@ -100,13 +100,13 @@ Here is a visualization of the architecture
 
 ![alt text][image1]
 
-I used validation set to determine how many training epochs is enough. Turns out, 2 epochs was sufficient, after that validation error would plateau and not decrease substantially.
+I used validation set to determine how many training epochs is enough. Turns out 2 epochs was sufficient, after that validation error would plateau and not decrease substantially.
 
 ![alt text][image2]
 
 ####3. Creation of the Training Set & Training Process
 
-I started with the exploration of the udacity data set and understood that most data points have steering angle equal 0. This is totally normal because we want to stay close as possible to the middle of the lane. My first model trained only on center images tried to maintain steering angle close to 0 and went off track. The model was trying to minimize RMSE, and that would happen when the model would output 0 most of the time. 
+I started with the exploration of the udacity data set and understood that most data points have steering angle equal 0. This is natural because we want to stay close as possible to the middle of the lane . My first model trained only on center images tried to maintain steering angle close to 0 and went off the track. The model was trying to minimize RMSE, by outputing 0 most of the time. 
 
 The situation started to improve when I added left and right camera images and adjusted values for steering angle, which was 
 ``` python
@@ -125,19 +125,13 @@ angle = k * steering - delta
 ![alt text][image4]
 ![alt text][image5]
 
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+Left and right camera images provided initial "recovery" data points, from which the model would learn how to put car back on track after the car left the middle of the road.
 
 ![alt text][image6]
 ![alt text][image7]
 ![alt text][image8]
 
-Etc ....
+In addition to left and right images, i added a few more trasformations:
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+1. flipping image at random along x axis and multiplying steering angle by -1. this simple technique doubled training set and helped 
 
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
