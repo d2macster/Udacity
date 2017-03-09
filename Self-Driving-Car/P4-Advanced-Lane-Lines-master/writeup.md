@@ -36,11 +36,11 @@ All the code is located in Processor folder.
 
 ###Video convertion.
 
-In this project I decided to save all intermediate images, which was a hlp with debugging process. The first step for this project is to convert input video in a sequence of images, store those. And at the end assemble processed images in a video stream. Helper fuctions to work with video are in Processor/video_converter.py. I use moviepy.editor to help with video parsing.
+In this project I decided to save all intermediate images, which was a hlp with debugging process. The first step for this project is to convert input video in a sequence of images, store those. And at the end assemble processed images in a video stream. Helper fuctions to work with video are in `Processor/video_converter.py`. I use moviepy.editor to help with video parsing.
 
 ###Camera Calibration
 
-After we successfully converted the video into a  sequence of images, we need to remove distortion which was introduced by the camera. Helper functions are located in Processor/camera_calibration.py. Udacity provided a set of camera calibration images:  photos ofchess boards taken in different alngles. I use `cv2.findChessboardCorners` to find the location of the chess board corners, combine them with `objpoints` - expected coordinates of those points in a undistorted image, and generate callibration matrix with the help of `cv2.calibrateCamera`. I pass the obtained matrix into `cv2.undistort` function and undistort video images. Here is an example of a calibration image, which is distorted.
+After we successfully converted the video into a  sequence of images, we need to remove distortion which was introduced by the camera. Helper functions are located in `Processor/camera_calibration.py`. Udacity provided a set of camera calibration images:  photos ofchess boards taken in different alngles. I use `cv2.findChessboardCorners` to find the location of the chess board corners, combine them with `objpoints` - expected coordinates of those points in a undistorted image, and generate callibration matrix with the help of `cv2.calibrateCamera`. I pass the obtained matrix into `cv2.undistort` function and undistort video images. Here is an example of a calibration image, which is distorted.
 
 ![alt text][image0].
 After applying undistirtion procedure, the result looks like
@@ -58,51 +58,15 @@ I used a combination of color and gradient thresholds to generate a binary image
 
 ####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
-
-```
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
-
-```
-This resulted in the following source and destination points:
-
-| Source        | Destination   | 
-|:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
-
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
-
-![alt text][image4]
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
-
-![alt text][image5]
 
 ####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
 
 ####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
-
-![alt text][image6]
-
----
 
 ###Pipeline (video)
 
