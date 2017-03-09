@@ -94,9 +94,9 @@ To compute lane curvature, I adopted the approach from `http://www.intmath.com/a
 
 Here is is: 
 
-!video[ result ](./output_video.mp4)
+!video[ output_video.mp4 ]( ./output_video.mp4 )
 
-[./output_video.mp4]: (./output_video.mp4)
+![ output_video.mp4 ] ( ./output_video.mp4 )
 
 ---
 
