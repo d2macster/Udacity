@@ -35,9 +35,11 @@ The same undistortion procedure we apply to every image we extract from the vide
 
 ####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-Perspective transform functions are located in `Processor/warper.py`. I use `cv2.getPerspectiveTransform` function to compute transformation matrix and `cv2.warpPerspective` to apply this transformation to every image. To construct a transformation matrix, I chose a video image where lanes visually parallel, e.g. 
-<img src="examples/perspective_0180.jpeg" width="200">. Thus after perspective transform lanes should be (almost) parallel. One important detail: perspective transform should not cut off lanes, we need to have 
+Perspective transform functions are located in `Processor/warper.py`. I use `cv2.getPerspectiveTransform` function to compute transformation matrix and `cv2.warpPerspective` to apply this transformation to every image. To construct a transformation matrix, I chose a video image where lanes visually parallel, e.g. Thus after perspective transform lanes should be (almost) parallel. 
+<img src="examples/undistort_0180.jpeg" width="200">.
 <img src="examples/warped_0180.jpeg" width="200">
+One important detail: perspective transform should not cut off lanes when the road is turning. After trial and error, i cam eup with the transform which preserves mostly lanes ( no extra objects), and preserves parallel lanes. Here I visualise the source mask.
+<img src="examples/perspective_0180.jpeg" width="200">
 
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
