@@ -26,14 +26,13 @@ After we successfully converted the video into a  sequence of images, we need to
 <img src="examples/calibration1.jpg" width="200">
 <img src="examples/calibration1_u.jpg" width="200">
 
-The changes are a bit suddle, look how the location of trees (closer to left and right side of the original image) changes in undistiorted image.
-
 ###Pipeline (single images)
 
 ####1. Provide an example of a distortion-corrected image.
 The same undistortion procedure we apply to every image we extract from the video stream. Here is an example of the original uand undistorted video images
 <img src="examples/video_0180.jpeg" width="200">
 <img src="examples/undistort_0180.jpeg" width="200">
+The changes are a bit suddle, look how the location of trees (closer to left and right side of the original image) changes in undistiorted image.
 
 
 ####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
