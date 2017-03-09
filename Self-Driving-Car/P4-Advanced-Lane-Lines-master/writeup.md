@@ -42,9 +42,9 @@ In this project I decided to save all intermediate images, which was a hlp with 
 
 After we successfully converted the video into a  sequence of images, we need to remove distortion which was introduced by the camera. Helper functions are located in `Processor/camera_calibration.py`. Udacity provided a set of camera calibration images:  photos ofchess boards taken in different alngles. I use `cv2.findChessboardCorners` to find the location of the chess board corners, combine them with `objpoints` - expected coordinates of those points in a undistorted image, and generate callibration matrix with the help of `cv2.calibrateCamera`. I pass the obtained matrix into `cv2.undistort` function and undistort video images. Here is an example of how removing distortion works: we take one of the calibration images ( which is distorted)
 
-![alt text][image0].
+![alt text][image0=100x20].
 and apply undistirtion procedure. The result of this process is shown here
-![alt text][image1].
+![alt text][image1=100x20].
 
 ###Pipeline (single images)
 
