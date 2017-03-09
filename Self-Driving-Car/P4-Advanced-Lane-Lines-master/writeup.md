@@ -26,6 +26,8 @@ After we successfully converted the video into a  sequence of images, we need to
 <img src="examples/calibration1.jpg" width="200">
 <img src="examples/calibration1_u.jpg" width="200">
 
+The changes are a bit suddle, look how the location of trees (closer to left and right side of the original image) changes in undistiorted image.
+
 ###Pipeline (single images)
 
 ####1. Provide an example of a distortion-corrected image.
