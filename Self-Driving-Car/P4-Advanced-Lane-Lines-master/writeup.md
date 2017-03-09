@@ -43,16 +43,18 @@ One important detail: perspective transform should not cut off lanes when the ro
 
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I experimented with different methods and came up to the conclusion that there is no single best way color / gradient transform which does great in all conditions. For instance, lane detection using S component of an image in HLS color transform can perform worse than detecting yellow and white colors using HSV color transform
+I experimented with different methods and came up to the conclusion that there is no single best way color / gradient transform which does great in all conditions. For instance, lane detection using S component of an image in HLS color transform can perform worse than combining power of detecting yellow and white colors using HSV color transform. Images in order: original, HLS(S), HSV(white), HSV(yellow).
 <img src="examples/warped_0256.jpeg" width="200">
 <img src="examples/hsl_s_0256.jpeg" width="200">
 <img src="examples/hsv_white_0256.jpeg" width="200">
 <img src="examples/hsv_yellow_0256.jpeg" width="200">
 
-
-
-####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
-
+However, this is not always true. For some images, this is reverse. Detecting lanes in HSV transform can miserably fail
+<img src="examples/warped_0227.jpeg" width="200">
+<img src="examples/hsv_thresh_0227.jpeg" width="200">
+yet by applying sobel transform to HLS color space (L and S components), we are still capable of detecting lanes 
+<img src="examples/hsl_thresh_0227.jpeg" width="200">
+<img src="examples/hls_s_0227.jpe" width="200">
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
