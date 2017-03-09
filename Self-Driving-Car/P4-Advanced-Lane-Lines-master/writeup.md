@@ -60,6 +60,9 @@ My solution was to use both approaches. The code is located in `Processor/thresh
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
 Lane detection routines are located in `Processor/lane_operations.py`. 
+The result of lane detection is shown in 
+
+<img src="examples/lane_detection.png" width="200">
 
 
 ####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
