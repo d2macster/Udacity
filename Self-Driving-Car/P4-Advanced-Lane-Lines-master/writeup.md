@@ -1,8 +1,3 @@
-##Writeup Template
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
 **Advanced Lane Finding Project**
 
 The goals / steps of this project are the following:
@@ -20,6 +15,18 @@ The goals / steps of this project are the following:
 
 [image1]: ./examples/video_0180.jpeg "Input video image"
 [image2]: ./examples/undistort_0180.jpeg "Undistorted video image"
+[image3]: ./examples/perspective_0180.jpeg "Perspective transform"
+[image4]: ./examples/warped_0180.jpeg "Warped image"
+[image5]: ./examples/warped_0256.jpeg "Clear colors, warped"
+[image6]: ./examples/hsl_s_0256.jpeg "Clear colors, hsl"
+[image7]: ./examples/hsv_white_0256.jpeg "Detecting white color"
+[image8]: ./examples/hsv_yellow_0256.jpeg "Detecting yellow color"
+[image9]: ./examples/warped_0227.jpeg "Difficult colors"
+[image10]: ./examples/hsl_thresh_0227.jpeg "HSL transform"
+[image11]: ./examples/hsv_thresh_0227.jpeg "HSV transform"
+[image12]: ./examples/hls_l_0227.jpeg "HSL L transform"
+[image13]: ./examples/hls_l_0227.jpeg "HSL L transform"
+[image14]: ./examples/lane_detection.png "Lane detection algo"
 [video1]: ./output_video.mp4 "Project Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
