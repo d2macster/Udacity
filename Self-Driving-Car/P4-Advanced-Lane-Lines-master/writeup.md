@@ -61,7 +61,17 @@ My solution was to use both approaches. The code is located in `Processor/thresh
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Lane detection routines are located in `Processor/lane_operations.py`. 
+Lane detection routines are located in `Processor/lane_operations.py`. The pipeline for lane detection is the following. Take a binary image, compute initial estimage of lane locations ( sum of non zero points in the lower half of the image, put those sums on x axis, and smooth the results). Choose those peaks which are within certain location ( empirically estimated after runing over the images multiple times). These are your starting points in lane detection. From these two starting points we subsume other points if they are close enough to located lane locations. 
+
+Proceed as follows:
+1. compute the count of non-zero points along y axix for each point on x axix, 
+2. smooth the results, 
+3. locate all peaks which are within threshold to the previously found lane positions,
+4. get all points which are within specified window
+5. re-adjust lane location
+
+At the end extract all 
+
 The result of lane detection is shown in 
 
 <img src="examples/lane_detection.png" width="200">
