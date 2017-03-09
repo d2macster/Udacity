@@ -12,8 +12,8 @@ The goals / steps of this project are the following:
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
 [//]: # (Image References)
-[image0]: ./examples/calibration1.jpeg "chess"
-[image1]: ./examples/calibration1_u.jpeg "Undistorted chess"
+[image0]: ./examples/calibration1.jpg "chess"
+[image1]: ./examples/calibration1_u.jpg "Undistorted chess"
 [image2]: ./examples/undistort_0180.jpeg "Undistorted video image"
 [image3]: ./examples/perspective_0180.jpeg "Perspective transform"
 [image4]: ./examples/warped_0180.jpeg "Warped image"
