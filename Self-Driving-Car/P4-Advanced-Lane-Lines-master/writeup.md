@@ -43,19 +43,23 @@ One important detail: perspective transform should not cut off lanes when the ro
 
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I experimented with different methods and came up to the conclusion that there is no single best way color / gradient transform which does great in all conditions. For instance, lane detection using S component of an image in HLS color transform can perform worse than combining power of detecting yellow and white colors using HSV color transform. Images in order: original, HLS(S), HSV(white), HSV(yellow).
+I experimented with different methods and came up to the conclusion that there is no single best way color / gradient transform which does great in all conditions. For instance, lane detection by applying sobel threshold to S component of an image in HLS color space can perform worse than combining power of detecting yellow and white colors using color thresholding in HSV color space. Images in order: original, HLS(S), HSV(white), HSV(yellow).
 <img src="examples/warped_0256.jpeg" width="200">
 <img src="examples/hsl_s_0256.jpeg" width="200">
 <img src="examples/hsv_white_0256.jpeg" width="200">
 <img src="examples/hsv_yellow_0256.jpeg" width="200">
 
-However, this is not always true. For some images, this is reverse. Detecting lanes in HSV transform can miserably fail
+However, this is not always true. For some images, this is reverse. Detecting lanes in HSV color space can miserably fail
 <img src="examples/warped_0227.jpeg" width="200">
 <img src="examples/hsv_thresh_0227.jpeg" width="200">
-yet by applying sobel transform to HLS color space (L and S components), we are still capable of detecting lanes 
-<img src="examples/hsl_thresh_0227.jpeg" width="200">
+yet by applying thresholded sobel transform in HLS color space (L and S components), we are still capable of detecting lanes 
+<img src="examples/hsl_thresh_0227.jpeg" width="200">.
+
+My solution was to use both approaches. The code is located in `Processor/thresholder.py`. Here i filter yellow and white colors in HSV space, and apply sobel transforms in HLS space. Then in main pipeline `main.py` `lines 46-77` i implement failover logic: if lane aroximation coefficients are almost the same ( obtained using both methods), then I just average both predictions. Otheriwse failover to use sobel transform from HLS color space.
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
+
+Lane detection routines are located in `Processor/lane_operations.py`. 
 
 
 ####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
