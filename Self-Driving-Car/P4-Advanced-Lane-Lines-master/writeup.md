@@ -94,7 +94,7 @@ To compute lane curvature, I adopted the approach from `http://www.intmath.com/a
 
 Here is is: 
 
-[video link]: ./output_video.mp4
+![video link]: ./output_video.mp4
 
 ---
 
