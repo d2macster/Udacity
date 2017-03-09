@@ -11,22 +11,6 @@ The goals / steps of this project are the following:
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
-[//]: # (Image References)
-[image2]: ./examples/undistort_0180.jpeg "Undistorted video image"
-[image3]: ./examples/perspective_0180.jpeg "Perspective transform"
-[image4]: ./examples/warped_0180.jpeg "Warped image"
-[image5]: ./examples/warped_0256.jpeg "Clear colors, warped"
-[image6]: ./examples/hsl_s_0256.jpeg "Clear colors, hsl"
-[image7]: ./examples/hsv_white_0256.jpeg "Detecting white color"
-[image8]: ./examples/hsv_yellow_0256.jpeg "Detecting yellow color"
-[image9]: ./examples/warped_0227.jpeg "Difficult colors"
-[image10]: ./examples/hsl_thresh_0227.jpeg "HSL transform"
-[image11]: ./examples/hsv_thresh_0227.jpeg "HSV transform"
-[image12]: ./examples/hls_l_0227.jpeg "HSL L transform"
-[image13]: ./examples/hls_l_0227.jpeg "HSL L transform"
-[image14]: ./examples/lane_detection.png "Lane detection algo"
-[video1]: ./output_video.mp4 "Project Video"
-
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 ###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
@@ -46,13 +30,14 @@ After we successfully converted the video into a  sequence of images, we need to
 
 ####1. Provide an example of a distortion-corrected image.
 The same undistortion procedure we apply to every image we extract from the video stream. Here is an example of undistort operation applied to a video image.
-![alt text][image2]
+<img src="examples/undistort_0180.jpeg" width="200">
+
 
 ####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
 Perspective transform functions are located in `Processor/warper.py`. I use `cv2.getPerspectiveTransform` function to compute transformation matrix and `cv2.warpPerspective` to apply this transformation to every image. To construct a transformation matrix, I chose a video image where lanes visually parallel, e.g. 
-![alt text][image3]. Thus after perspective transform lanes should be (almost) parallel. One important detail: perspective transform must work for lanes on all video images. 
-![alt text][image5].
+<img src="examples/perspective_0180.jpeg" width="200">. Thus after perspective transform lanes should be (almost) parallel. One important detail: perspective transform should not cut off lanes, we need to have 
+<img src="examples/warped_0180.jpeg" width="200">
 
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
