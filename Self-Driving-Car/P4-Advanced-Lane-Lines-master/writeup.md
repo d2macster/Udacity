@@ -42,9 +42,14 @@ One important detail: perspective transform should not cut off lanes when the ro
 <img src="examples/perspective_0180.jpeg" width="200">
 
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
 
-![alt text][image3]
+I experimented with different methods and came up to the conclusion that there is no single best way color / gradient transform which does great in all conditions. For instance, lane detection using S component of an image in HLS color transform can perform worse than detecting yellow and white colors using HSV color transform
+<img src="examples/warped_0256.jpeg" width="200">
+<img src="examples/hsl_s_0256.jpeg" width="200">
+<img src="examples/hsv_white_0256.jpeg" width="200">
+<img src="examples/hsv_yellow_0256.jpeg" width="200">
+
+
 
 ####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
