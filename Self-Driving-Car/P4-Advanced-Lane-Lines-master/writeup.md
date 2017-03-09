@@ -87,6 +87,7 @@ To compute lane curvature, I adopted the approach from `http://www.intmath.com/a
 
 ####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
+<img src="examples/lane_marking_0001.jpeg" width="200">.
 
 ###Pipeline (video)
 
