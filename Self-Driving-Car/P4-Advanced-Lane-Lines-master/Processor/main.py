@@ -20,20 +20,20 @@ if __name__ == '__main__':
     test_images = "{}/test_images".format(data_prefix)
     output_images = "{}/output_images".format(data_prefix)
 
-    # video_converter.video_to_images(
-    #     video_path=input_video,
-    #     images_path=video_images,
-    #     image_prefix="img")
+    video_converter.video_to_images(
+         video_path=input_video,
+         images_path=video_images,
+         image_prefix="img")
 
-    # mtx, dist = calibrate(
-    #     img_path=calibration_images,
-    #     img_prefix="calibration")
-    #
-    # undistort_dir(
-    #     input_path=video_images,
-    #     output_path=undistorted_images,
-    #     mtx=mtx,
-    #     dist=dist)
+    mtx, dist = calibrate(
+         img_path=calibration_images,
+         img_prefix="calibration")
+    
+    undistort_dir(
+         input_path=video_images,
+         output_path=undistorted_images,
+         mtx=mtx,
+         dist=dist)
 
     right_fit_prev = None
     left_fit_prev = None
