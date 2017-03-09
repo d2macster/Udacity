@@ -92,7 +92,9 @@ To compute lane curvature, I adopted the approach from `http://www.intmath.com/a
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here is is: [video link]: ./output_video.mp4
+Here is is: 
+
+[video link]: ./output_video.mp4
 
 ---
 
