@@ -12,8 +12,6 @@ The goals / steps of this project are the following:
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
 [//]: # (Image References)
-[image0]: ./examples/calibration1.jpg "chess"
-[image1]: ./examples/calibration1_u.jpg "Undistorted chess"
 [image2]: ./examples/undistort_0180.jpeg "Undistorted video image"
 [image3]: ./examples/perspective_0180.jpeg "Perspective transform"
 [image4]: ./examples/warped_0180.jpeg "Warped image"
@@ -41,10 +39,9 @@ In this project I decided to save all intermediate images, which was a hlp with 
 ###Camera Calibration
 
 After we successfully converted the video into a  sequence of images, we need to remove distortion which was introduced by the camera. Helper functions are located in `Processor/camera_calibration.py`. Udacity provided a set of camera calibration images:  photos ofchess boards taken in different alngles. I use `cv2.findChessboardCorners` to find the location of the chess board corners, combine them with `objpoints` - expected coordinates of those points in a undistorted image, and generate callibration matrix with the help of `cv2.calibrateCamera`. I pass the obtained matrix into `cv2.undistort` function and undistort video images. Here is an example of how removing distortion works: we take one of the calibration images ( which is distorted)
-
 <img src="examples/calibration1.jpg" width="200">
 and apply undistirtion procedure. The result of this process is shown here
-![alt text][image1=100x20].
+<img src="examples/calibration1_u.jpg" width="200">
 
 ###Pipeline (single images)
 
