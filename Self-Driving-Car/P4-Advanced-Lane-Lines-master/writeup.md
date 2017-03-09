@@ -54,7 +54,6 @@ However, this is not always true. For some images, this is reverse. Detecting la
 <img src="examples/hsv_thresh_0227.jpeg" width="200">
 yet by applying sobel transform to HLS color space (L and S components), we are still capable of detecting lanes 
 <img src="examples/hsl_thresh_0227.jpeg" width="200">
-<img src="examples/hls_s_0227.jpe" width="200">
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
