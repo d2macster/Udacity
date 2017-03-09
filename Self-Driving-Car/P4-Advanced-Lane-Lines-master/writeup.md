@@ -29,7 +29,8 @@ After we successfully converted the video into a  sequence of images, we need to
 ###Pipeline (single images)
 
 ####1. Provide an example of a distortion-corrected image.
-The same undistortion procedure we apply to every image we extract from the video stream. Here is an example of undistort operation applied to a video image.
+The same undistortion procedure we apply to every image we extract from the video stream. Here is an example of the original uand undistorted video images
+<img src="examples/video_0180.jpeg" width="200">
 <img src="examples/undistort_0180.jpeg" width="200">
 
 
