@@ -2,6 +2,8 @@ import video_converter
 import matplotlib.pyplot as plt
 import glob
 import utils
+import features
+import cv2
 
 from sklearn.externals import joblib
 from scipy.ndimage.measurements import label
@@ -32,19 +34,43 @@ if __name__ == '__main__':
     scaler_model = "{}/scaler.pkl".format(data_prefix)
     svc_model = "{}/svc.pkl".format(data_prefix)
 
+    ystart = 400
+    ystop = 656
+    scale_list = [0.8, 1, 1.2, 1.5, 1.7, 2, 2.3, 2.5, 2.7, 3]
+    orient = 9
+    pix_per_cell = 8
+    cell_per_block = 2
+    heat_history = 6
+
     video_converter.video_to_images(
-          video_path=input_video,
-          images_path=video_images)
+         video_path=input_video,
+         images_path=video_images)
 
     mtx, dist = calibrate(
-         img_path=calibration_images,
-         img_prefix="calibration")
-    
+        img_path=calibration_images,
+        img_prefix="calibration")
+
     undistort_dir(
-         input_path=video_images,
-         output_path=undistorted_images,
-         mtx=mtx,
-         dist=dist)
+        input_path=video_images,
+        output_path=undistorted_images,
+        mtx=mtx,
+        dist=dist)
+
+
+    # # dispalay the HOG transform
+    # img = utils.read_image("{}/examples/notcar.png".format(data_prefix))
+    # img = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
+    #
+    # features, hog_image = features.get_hog_features(
+    #     img=img[:,:,0],
+    #     orient=orient,
+    #     cell_per_block=cell_per_block,
+    #     pix_per_cell=pix_per_cell,
+    #     vis=True
+    # )
+    #
+    # plt.imshow(hog_image)
+    # plt.show()
 
 
     cars = list(glob.glob("{}/*/*.png".format(vehicles_images)))
@@ -54,17 +80,9 @@ if __name__ == '__main__':
     X_scaler = joblib.load(scaler_model)
     svc = joblib.load(svc_model)
 
-    ystart = 400
-    ystop = 656
-    scale_list = [0.8, 1, 1.2, 1.5, 1.7, 2, 2.3, 2.5, 2.7, 3]
-    orient = 9
-    pix_per_cell = 8
-    cell_per_block = 2
-    heat_history = 5
-
     image_list = glob.glob("{}/*.jpg".format(undistorted_images))
 
-    for image_path in image_list:
+    for image_path in image_list[0:0]:
         print(image_path)
         img = utils.read_image(image_path)
         heat = np.zeros_like(img[:, :, 0]).astype(np.float)
@@ -90,9 +108,16 @@ if __name__ == '__main__':
     for i in range(heat_history, len(heat_list)):
         print(image_list[i])
         img = utils.read_image(image_list[i])
+        cumulative_heat = np.zeros_like(img[:, :, 0]).astype(np.float)
 
-        heat = joblib.load(heat_list[i])
-        cumulative_heat = detection.apply_threshold(heat, 5)
+        for j in range(0, heat_history):
+            heat = joblib.load(heat_list[i - j])
+            heat = detection.apply_threshold(heat, 7)
+            heat = np.clip(a=heat, a_min=0, a_max=10)
+            cumulative_heat += heat
+
+        cumulative_heat = detection.apply_threshold(cumulative_heat, 45)
+
         heatmap = np.clip(cumulative_heat, 0, 255)
         labels = label(heatmap)
         draw_img = detection.draw_labeled_bboxes(np.copy(img), labels)
