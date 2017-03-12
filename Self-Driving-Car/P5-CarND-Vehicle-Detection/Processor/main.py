@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
     image_list = glob.glob("{}/*.jpg".format(undistorted_images))
 
-    for image_path in image_list[0:0]:
+    for image_path in image_list:
         print(image_path)
         img = utils.read_image(image_path)
         heat = np.zeros_like(img[:, :, 0]).astype(np.float)
