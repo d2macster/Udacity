@@ -60,15 +60,12 @@ I decided to use `YCrCb` color space and HOG as features. I did not use any colo
 
 When we apply HOG to a single image , we may received faulse positive signals. Let us closely examinene a sequence of 6 video images.
 
-<img src="examples/img0981.png" width="64">
-<img src="examples/img0982.png" width="64">
-<img src="examples/img0983.png" width="64">
-<img src="examples/img0984.png" width="64">
-<img src="examples/img0985.png" width="64">
-<img src="examples/img0986.png" width="64">
-
-
-
+<img src="examples/img0981.jpg" width="64">
+<img src="examples/img0982.jpg" width="64">
+<img src="examples/img0983.jpg" width="64">
+<img src="examples/img0984.jpg" width="64">
+<img src="examples/img0985.jpg" width="64">
+<img src="examples/img0986.jpg" width="64">
 
 
 
