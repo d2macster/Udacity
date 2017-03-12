@@ -27,10 +27,10 @@ The code is located in `Processor/scale_train.py`. I discovered that my validati
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)` for channel 0:
 for car
 <img src="examples/car.png" width="64">
-<img src="examples/car_hog_ch0.png" width="64">
+<img src="examples/car_hog_ch0.png" width="128">
 and not car 
 <img src="examples/notcar.png" width="64">
-<img src="examples/notcar_hog_ch0.png" width="64">
+<img src="examples/notcar_hog_ch0.png" width="128">
 
 
 ####2. Explain how you settled on your final choice of HOG parameters.
