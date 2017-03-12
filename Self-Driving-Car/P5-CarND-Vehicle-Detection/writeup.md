@@ -21,15 +21,10 @@ I started by reading in all the `vehicle` and `non-vehicle` images. The code is 
 <img src="examples/car.png" width="64">
 <img src="examples/notcar.png" width="64">
 
-
-
-
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+This project requires tuning many parameters, e.g. color space, HOG parameters, sliding window parameters, carrying heat map between video images. Before going crazy into optimization loop, I started with using the default settings for HOG: `RGB` color space, `orientations=9`, `pixels_per_cell=(8, 8)`, `cells_per_block=(2, 2)`,  `hog channel = 0`, and performed training / validation process.
+The code is located in `Processor/scale_train.py`. I discovered that my validation accuracy was ~ 92% on the provided labeled data sets. When I changed color space to `YUV` color space, the accuracy jumped to ~ 94%. When I switched to `YCrCb` color space, the accuracy increased to ~ 98%, and finally when used `hog channel = ALL` the accuracy became 100%. At this point I did not want to spend any more time optimizing the result without seeing how good / bad car detection will work in practice. 
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
-
-
-![alt text][image2]
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
