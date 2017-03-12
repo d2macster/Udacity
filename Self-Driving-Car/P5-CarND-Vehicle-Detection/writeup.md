@@ -85,13 +85,13 @@ To mitigate the problem, i incorporate historic lookup: 6 frames back. For each 
 
 ### Here is the processed cumulative heat map
 
-<img src="examples/cumulative_heat.png" width="192">
+<img src="examples/cumulative_heat.png" width="300">
 
 I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
 
-<img src="examples/cumulative_detection.png" width="192">
+<img src="examples/cumulative_detection.png" width="300">
 
 
 ---
