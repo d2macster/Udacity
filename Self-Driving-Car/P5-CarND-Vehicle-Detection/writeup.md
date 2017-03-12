@@ -80,4 +80,6 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-This project required a lot of parameter tuning. I had to narrow down my search space to what features to use, how to scale sliding windows, how to implement false positive rejection. Some sort of kalman filter would help more to identify which detection is a vehicle and which one is not, but. i didnt have time to do this. 
+This project required a lot of parameter tuning. I had to narrow down my search space to what features to use, how to scale sliding windows, how to implement false positive rejection. Some sort of kalman filter would help more to identify which detection is a vehicle and which one is not, but I didnt have time to do this. 
+
+Another dimention for improment is classifier itself. I used linear svm, however by now we learned a very powerful tool like neural networks. Using Udacity car dataset in combination with a NN should be the next step to improve the project.
