@@ -80,5 +80,4 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
+This project required a lot of parameter tuning. I had to narrow down my search space to what features to use, how to scale sliding windows, how to implement false positive rejection. Some sort of kalman filter would help more to identify which detection is a vehicle and which one is not, but. i didnt have time to do this. 
