@@ -58,6 +58,20 @@ I decided to use `YCrCb` color space and HOG as features. I did not use any colo
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
+When we apply HOG to a single image , we may received faulse positive signals. Let us closely examinene a sequence of 6 video images.
+
+<img src="examples/img0981.png" width="64">
+<img src="examples/img0982.png" width="64">
+<img src="examples/img0983.png" width="64">
+<img src="examples/img0984.png" width="64">
+<img src="examples/img0985.png" width="64">
+<img src="examples/img0986.png" width="64">
+
+
+
+
+
+
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
