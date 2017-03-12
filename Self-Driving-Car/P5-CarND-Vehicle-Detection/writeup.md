@@ -69,7 +69,7 @@ When we apply HOG to a single image , we may received faulse positive signals. L
 <img src="examples/img0985.jpg" width="192">
 <img src="examples/img0986.jpg" width="192">
 
-Now let us plot their corresponding heat maps: sum of all car detections , as described in `Processor/detection.py` , `def find_cars` routine.
+Now let us plot their corresponding heat maps: sum of all positive detections, as described in `Processor/detection.py` , `def find_cars` routine.
 
 ### Here are their corresponding heatmaps:
 
@@ -83,7 +83,7 @@ Now let us plot their corresponding heat maps: sum of all car detections , as de
 We observe some phantom detections, in addition to true detection of those two cars.
 To mitigate the problem, i incorporate historic lookup: 6 frames back. For each individual heat map i filter out values which are bellow a threshould, and then 
 
-### Here is the cumulative heat map
+### Here is the processed cumulative heat map
 
 <img src="examples/cumulative_heat.png" width="192">
 
