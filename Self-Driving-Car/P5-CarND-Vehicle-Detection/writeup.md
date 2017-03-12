@@ -19,7 +19,7 @@ For this project I downloaded a set of `vehicle` images from https://s3.amazonaw
 
 I started by reading in all the `vehicle` and `non-vehicle` images. The code is located in `Processor/main.py`, lines 50-51. Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 <img src="examples/car.png" width="200">
-<img src="examples/noncar.png" width="200">
+<img src="examples/notcar.png" width="200">
 
 
 
