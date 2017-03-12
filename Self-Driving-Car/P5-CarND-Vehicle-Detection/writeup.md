@@ -91,6 +91,7 @@ I then used `scipy.ndimage.measurements.label()` to identify individual blobs in
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
 
+<img src="examples/cumulative_detection.png" width="192">
 
 
 ---
