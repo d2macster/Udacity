@@ -81,7 +81,7 @@ Now let us plot their corresponding heat maps: sum of all positive detections, a
 <img src="examples/heat_986.png" width="192">
 
 We observe some phantom detections, in addition to true detection of those two cars.
-To mitigate the problem, i incorporate historic lookup: 6 frames back. For each individual heat map i filter out values which are bellow a threshould, and then combine a
+To mitigate the problem, i incorporate historic lookup: 6 frames back. For each individual heat map i filter out values which are bellow a threshould, and then i clip the remaining values. This operation (clipping) prevents from having one outlier which will propagate its influence to all 6 frames in the history.
 
 ### Here is the processed cumulative heat map
 
