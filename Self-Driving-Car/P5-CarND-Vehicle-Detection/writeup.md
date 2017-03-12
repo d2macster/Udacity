@@ -45,7 +45,7 @@ Sliding window search routine is located in `/Processor/detection.py` and is cal
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 I decided to use `YCrCb` color space and HOG as features. I did not use any color features : as I showed earlier, even with HOG featutes i got 100% accuracy on test data set. 
-<img src="examples/sliding_window_search.png" width="128">
+<img src="examples/sliding_window_search.png" width="620">
 ---
 
 ### Video Implementation
