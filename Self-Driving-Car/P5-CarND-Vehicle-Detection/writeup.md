@@ -40,9 +40,7 @@ The code is located in `/Processor/scale_train.py`. For both `car` and `not car`
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
-
-![alt text][image3]
+Sliding window search routine is located in `/Processor/detection.py` and is called `def find_cars():`. Sliding window is a computationally expensive operation. Our training data set with `cars` and `notcars` contains images on `64x64` pixels, thus we need to convert our windows to that standard size. Instead of taking small image patches and resize them to standard `64z64`, i was resizing the whole image, compute HOG for it, anf then slide cell by cell , where `cell = pixels_per_cell` parameter for HOG computation. I explored video images to understand what car size are we supposed to detect, and set scale parameter to be `scale_list = [0.8, 1, 1.2, 1.5, 1.7, 2, 2.3, 2.5, 2.7, 3]` in `/Processor/main.py`. Thus effectively we can search for cars of size `52x52` to `192x192` pixels.
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
