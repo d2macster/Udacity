@@ -81,13 +81,13 @@ Now let us plot their corresponding heat maps: sum of all positive detections, a
 <img src="examples/heat_986.png" width="192">
 
 We observe some phantom detections, in addition to true detection of those two cars.
-To mitigate the problem, i incorporate historic lookup: 6 frames back. For each individual heat map i filter out values which are bellow a threshould, and then i clip the remaining values. This operation (clipping) prevents from having one outlier which will propagate its influence to all 6 frames in the history.
+To mitigate the problem, i incorporate historic lookup: 6 frames back. For each individual heat map i filter out values which are bellow a threshould, and then i clip the remaining values. This operation (clipping) prevents from having one outlier which will propagate its influence to all 6 frames in the history. The logick is located in `Processor/main.py` lines 111-119.
 
 ### Here is the processed cumulative heat map
 
 <img src="examples/cumulative_heat.png" width="300">
 
-I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.
+I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected. The logick is located in `Processor/main.py` lines 121-123
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
 
