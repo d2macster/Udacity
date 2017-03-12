@@ -60,6 +60,8 @@ I decided to use `YCrCb` color space and HOG as features. I did not use any colo
 
 When we apply HOG to a single image , we may received faulse positive signals. Let us closely examinene a sequence of 6 video images.
 
+### Here are six frames
+
 <img src="examples/img0981.jpg" width="192">
 <img src="examples/img0982.jpg" width="192">
 <img src="examples/img0983.jpg" width="192">
@@ -69,6 +71,8 @@ When we apply HOG to a single image , we may received faulse positive signals. L
 
 Now let us plot their corresponding heat maps: sum of all car detections , as described in `Processor/detection.py` , `def find_cars` routine.
 
+### Here are their corresponding heatmaps:
+
 <img src="examples/heat_981.png" width="192">
 <img src="examples/heat_982.png" width="192">
 <img src="examples/heat_983.png" width="192">
@@ -76,14 +80,13 @@ Now let us plot their corresponding heat maps: sum of all car detections , as de
 <img src="examples/heat_985.png" width="192">
 <img src="examples/heat_986.png" width="192">
 
+We observe some phantom detections, in addition to true detection of those two cars.
+To mitigate the problem, i incorporate historic lookup: 6 frames back. For each individual heat map i filter out values which are bellow a threshould, and then 
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
-### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
 
 ### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
 ![alt text][image6]
