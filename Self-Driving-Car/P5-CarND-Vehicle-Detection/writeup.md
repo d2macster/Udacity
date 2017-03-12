@@ -15,7 +15,7 @@ The goals / steps of this project are the following:
 
 ####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+For this project I downloaded a set of car images from https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip and non-car images from https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip.
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
