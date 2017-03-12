@@ -15,11 +15,14 @@ The goals / steps of this project are the following:
 
 ####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-For this project I downloaded a set of car images from https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip and non-car images from https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip.
+For this project I downloaded a set of `vehicle` images from https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip and `non-vehicle` images from https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip.
 
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+I started by reading in all the `vehicle` and `non-vehicle` images. The code is located in `Processor/main.py`, lines 50-51. Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+<img src="examples/car.png" width="200">
+<img src="examples/noncar.png" width="200">
 
-![alt text][image1]
+
+
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
