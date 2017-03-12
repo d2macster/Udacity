@@ -32,14 +32,9 @@ and not car
 <img src="examples/notcar.png" width="64">
 <img src="examples/notcar_hog_ch0.png" width="128">
 
+####2. Describe how (and identify where in your code) you trained a classifier using your selected HOG features.
 
-####2. Explain how you settled on your final choice of HOG parameters.
-
-I tried various combinations of parameters and...
-
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
-
-I trained a linear SVM using...
+The code is located in `/Processor/scale_train.py`. For both `car` and `not car` data sets we extract HOG features, notmalize them using `X_scaler = StandardScaler().fit(X)` and `scaled_X = X_scaler.transform(X)`. Then we split inpiut dta aset into train and test subsets using `sklearn.model_selection.train_test_split`, and finally train linear svm classifier using `svc = sklearn.svm.LinearSVC()`. Finally we save both `X_scaler` and `svc` using `sklearn.externals.joblib`. We need these objects to do pattern matching in the actial video images later. 
 
 ###Sliding Window Search
 
