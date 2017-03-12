@@ -67,6 +67,14 @@ When we apply HOG to a single image , we may received faulse positive signals. L
 <img src="examples/img0985.jpg" width="192">
 <img src="examples/img0986.jpg" width="192">
 
+Now let us plot their corresponding heat maps: sum of all car detections , as described in `Processor/detection.py` , `def find_cars` routine.
+
+<img src="examples/heat_981.png" width="192">
+<img src="examples/heat_982.png" width="192">
+<img src="examples/heat_983.png" width="192">
+<img src="examples/heat_984.png" width="192">
+<img src="examples/heat_985.png" width="192">
+<img src="examples/heat_986.png" width="192">
 
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
