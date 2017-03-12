@@ -66,7 +66,6 @@ def convert_color(img, conv='RGB2YCrCb'):
 
 # Define a single function that can extract features using hog sub-sampling and make predictions
 def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, heat):
-    draw_img = np.copy(img)
     img = img.astype(np.float32) / 255
 
     img_tosearch = img[ystart:ystop, :, :]

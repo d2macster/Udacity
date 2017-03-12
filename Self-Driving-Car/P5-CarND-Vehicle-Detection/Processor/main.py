@@ -14,9 +14,9 @@ import numpy as np
 color_space = 'YCrCb'
 
 if __name__ == '__main__':
-    data_prefix = "/Users/andriicherniak/Desktop/CarND-Vehicle-Detection-master"
+    data_prefix = "/Users/andriicherniak/Desktop/P5-CarND-Vehicle-Detection"
     input_video = "{}/project_video.mp4".format(data_prefix)
-    output_video = "{}/output_video.mp4".format(data_prefix)
+    output_video = "{}/project_video_output.mp4".format(data_prefix)
 
     video_images = "{}/video_images".format(data_prefix)
     calibration_images = "{}/camera_cal".format(data_prefix)
@@ -32,39 +32,39 @@ if __name__ == '__main__':
     scaler_model = "{}/scaler.pkl".format(data_prefix)
     svc_model = "{}/svc.pkl".format(data_prefix)
 
-    # video_converter.video_to_images(
-    #      video_path=input_video,
-    #      images_path=video_images)
+    video_converter.video_to_images(
+          video_path=input_video,
+          images_path=video_images)
 
-    # mtx, dist = calibrate(
-    #     img_path=calibration_images,
-    #     img_prefix="calibration")
-    #
-    # undistort_dir(
-    #     input_path=video_images,
-    #     output_path=undistorted_images,
-    #     mtx=mtx,
-    #     dist=dist)
+    mtx, dist = calibrate(
+         img_path=calibration_images,
+         img_prefix="calibration")
+    
+    undistort_dir(
+         input_path=video_images,
+         output_path=undistorted_images,
+         mtx=mtx,
+         dist=dist)
 
 
-    # cars = list(glob.glob("{}/*/*.png".format(vehicles_images)))
-    # notcars = list(glob.glob("{}/*/*.png".format(nonvehicles_images)))
-    # scale_train.train(cars=cars, notcars=notcars, scaler_model=scaler_model, svc_model=svc_model)
+    cars = list(glob.glob("{}/*/*.png".format(vehicles_images)))
+    notcars = list(glob.glob("{}/*/*.png".format(nonvehicles_images)))
+    scale_train.train(cars=cars, notcars=notcars, scaler_model=scaler_model, svc_model=svc_model)
 
     X_scaler = joblib.load(scaler_model)
     svc = joblib.load(svc_model)
 
     ystart = 400
     ystop = 656
-    scale_list = [0.8, 1, 1.5, 2, 2.5, 3]
+    scale_list = [0.8, 1, 1.2, 1.5, 1.7, 2, 2.3, 2.5, 2.7, 3]
     orient = 9
     pix_per_cell = 8
     cell_per_block = 2
-    heat_history = 3
+    heat_history = 5
 
     image_list = glob.glob("{}/*.jpg".format(undistorted_images))
 
-    for image_path in image_list[0:0]:
+    for image_path in image_list:
         print(image_path)
         img = utils.read_image(image_path)
         heat = np.zeros_like(img[:, :, 0]).astype(np.float)
@@ -87,23 +87,18 @@ if __name__ == '__main__':
         joblib.dump(heat, out_path)
 
     heat_list = list(glob.glob("{}/*.pkl".format(heat_images)))
-    # for i in range(heat_history - 1, len(heat_list)):
-    #     print(image_list[i])
-    #     img = utils.read_image(image_list[i])
-    #     cumulative_heat = np.zeros_like(img[:, :, 0]).astype(np.float)
-    #
-    #     for j in range(0, heat_history):
-    #         # print(heat_list[i-j])
-    #         heat = joblib.load(heat_list[i - j])
-    #         cumulative_heat += heat
-    #
-    #     cumulative_heat = detection.apply_threshold(cumulative_heat, 3)
-    #     heatmap = np.clip(cumulative_heat, 0, 255)
-    #     labels = label(heatmap)
-    #     draw_img = detection.draw_labeled_bboxes(np.copy(img), labels)
-    #
-    #     o_path = "{}/{}".format(output_images, utils.file_name(image_list[i]))
-    #     utils.save_image(draw_img, o_path)
+    for i in range(heat_history, len(heat_list)):
+        print(image_list[i])
+        img = utils.read_image(image_list[i])
+
+        heat = joblib.load(heat_list[i])
+        cumulative_heat = detection.apply_threshold(heat, 5)
+        heatmap = np.clip(cumulative_heat, 0, 255)
+        labels = label(heatmap)
+        draw_img = detection.draw_labeled_bboxes(np.copy(img), labels)
+
+        o_path = "{}/{}".format(output_images, utils.file_name(image_list[i]))
+        utils.save_image(draw_img, o_path)
 
     video_converter.images_to_video(
         images_path=output_images,
