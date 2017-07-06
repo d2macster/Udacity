@@ -1,0 +1,45 @@
+It was quite fun to play with the simulator, crash the car a few (hundred) times, learn from those, and tune the model.
+I started the tuning process by runing the car at lower speeds (throttle value), and then was gradually increasing the
+throttle setting, and optimized the parametes.
+
+Parameter optimisation was done by hand.
+For initial tuning : throttle = 0.15, and followed the procedure in
+https://robotics.stackexchange.com/questions/167/what-are-good-strategies-for-tuning-pid-loops.
+
+Optimal values for Kp = 0.3, Ki = 0, Kd = 8.0. This was a bit surprising, that the best value for Ki = 0.
+For any value >= 0, at initial time i would get pretty big oscillations.
+
+To quantify my optimisation criterion I used max abs cte observed
+error = fmax(cum_error, fabs(cte)).
+
+This value shows how close the car approached to the track edge.
+
+Once I got starting values for Kp, Ki, Kd, I applied COORDINATE DESCENT method to tune those parameters
+for higher car speeds, using parameters from the previous step as a starting point.
+Here are the results from my experiments:
+
+throttle = 0.15 => Kp = 0.3,   Ki = 0,      Kd = 8.0
+throttle = 0.3  => Kp = 0.3,   Ki = 0,      Kd = 4.5
+throttle = 0.4  => Kp = 0.3,   Ki = 0,      Kd = 4.0
+throttle = 0.5  => Kp = 0.25,  Ki = 0.002,  Kd = 4.0
+throttle = 0.6  => Kp = 0.22,  Ki = 0.001,  Kd = 4.5
+
+I do not claim these values to be absolutely optimal for the corresponding throttle values,
+However there are a few peculiar qualitative results here.
+1. at higher speeds best value for Ki > 0, for lower speeds Ki = 0
+2. at higher speeds best values for Kp and Kd are SMALLER than for lower speeds.
+   my intuition - we should avoid over-steering at higher speeds ( do not over-react)
+
+
+Finally I realized, that no matter how I tune the parameters, there is a turn on the track, where the
+car dangerously approaches the edge. However at other parts of the track steering is much better.
+Thus i came up with double PID controller solution for this project.
+The first one is tuning the steering, and the second one - throttle. And if the car starts to dangerously
+approach the edge of the road - just slow down. The parameters for the throttle PID contoller were set by
+hand as well. My optimization goal was to achieve stable behavior of the car when it starts oscillating,
+otherwise accelerate. Safety parameter was CTE = 1.5. When we are below this value - we accelerate:
+otherwise - reduce throttle , or slow apply breaks when necessary.
+
+As a  result, I achieved max speed ~ 71.5 mph, and most of the track I cover at the speed above 60 mph.
+
+I was not able to correctly record the screen because the simulator even in the smallest resolution, was consuming the whole CPU, and a video recorder was too much for my older laptop :(
