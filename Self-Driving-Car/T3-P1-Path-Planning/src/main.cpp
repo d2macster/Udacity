@@ -1,0 +1,225 @@
+#include <fstream>
+#include <uWS/uWS.h>
+#include <iostream>
+#include <thread>
+#include "json.hpp"
+#include "waypoints.h"
+#include "cartesian_frenet.h"
+#include "JMT.h"
+#include "course.h"
+#include <queue>
+
+using namespace std;
+
+// for convenience
+using json = nlohmann::json;
+
+
+// Checks if the SocketIO event has JSON data.
+// If there is data the JSON object in string format will be returned,
+// else the empty string "" will be returned.
+string hasData(string s) {
+    auto found_null = s.find("null");
+    auto b1 = s.find_first_of("[");
+    auto b2 = s.find_first_of("}");
+    if (found_null != string::npos) {
+        return "";
+    } else if (b1 != string::npos && b2 != string::npos) {
+        return s.substr(b1, b2 - b1 + 2);
+    }
+    return "";
+}
+
+
+int main() {
+    uWS::Hub h;
+
+    // Waypoint map to read from
+    string map_file_ = "../data/highway_map.csv";
+    int lane = 1;
+    vector<jmt_state> car_state_s_v, car_state_d_v;
+    double max_speed = 0.0;
+
+
+    vector<double> map_waypoints_x, map_waypoints_y, map_waypoints_s, map_waypoints_dx, map_waypoints_dy;
+
+    tie(map_waypoints_x, map_waypoints_y, map_waypoints_s, map_waypoints_dx, map_waypoints_dy) = get_waypoints(
+            map_file_);
+
+    h.onMessage(
+            [&map_waypoints_x, &map_waypoints_y, &map_waypoints_s, &map_waypoints_dx,
+                    &map_waypoints_dy, &lane, &car_state_s_v, &car_state_d_v, &max_speed](
+                    uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
+                    uWS::OpCode opCode) {
+                // "42" at the start of the message means there's a websocket message event.
+                // The 4 signifies a websocket message
+                // The 2 signifies a websocket event
+                //auto sdata = string(data).substr(0, length);
+                //cout << sdata << endl;
+                if (length && length > 2 && data[0] == '4' && data[1] == '2') {
+
+                    auto s = hasData(data);
+
+                    if (s != "") {
+                        auto j = json::parse(s);
+
+                        string event = j[0].get<string>();
+
+                        if (event == "telemetry") {
+                            // j[1] is the data JSON object
+
+                            // Main car's localization Data
+                            double car_x = j[1]["x"];
+                            double car_y = j[1]["y"];
+                            double car_s = j[1]["s"];
+                            double car_d = j[1]["d"];
+                            double car_yaw = j[1]["yaw"];
+                            double car_speed = j[1]["speed"];
+
+                            // Previous path data given to the Planner
+                            auto previous_path_x = j[1]["previous_path_x"];
+                            auto previous_path_y = j[1]["previous_path_y"];
+                            // Previous path's end s and d values
+                            double end_path_s = j[1]["end_path_s"];
+                            double end_path_d = j[1]["end_path_d"];
+
+                            // Sensor Fusion Data, a list of all other cars on the same side of the road.
+                            auto sensor_fusion = j[1]["sensor_fusion"];
+
+                            json msgJson;
+
+                            vector<double> next_x_vals;
+                            vector<double> next_y_vals;
+
+                            vector<jmt_state> car_state_s_v_next, car_state_d_v_next;
+
+
+                            int path_size = previous_path_x.size();
+                            int state_size = int(car_state_s_v.size());
+                            int size_delta = state_size - path_size;
+
+
+                            if (path_size > 3) path_size = 3;
+
+                            for (int i = 0; i < path_size; i++) {
+                                next_x_vals.push_back(previous_path_x[i]);
+                                next_y_vals.push_back(previous_path_y[i]);
+                                car_state_s_v_next.push_back(car_state_s_v[size_delta + i]);
+                                car_state_d_v_next.push_back(car_state_d_v[size_delta + i]);
+                            }
+
+                            // car_speed is in mph NOT mps
+
+                            jmt_state car_state_s, car_state_d;
+
+                            if (path_size == 0) {
+                                car_state_s = {car_s, 0.44704 * car_speed, 0};
+                                car_state_d = {car_d, 0, 0};
+                            } else {
+                                car_state_s = car_state_s_v_next[car_state_s_v_next.size() - 1];
+                                car_state_d = car_state_d_v_next[car_state_d_v_next.size() - 1];
+                            }
+
+                            car_state_s.s = fmod(car_state_s.s, MAX_S);
+                            jmt_state snapshot_s = {car_s, 0.44704 * car_speed, 0.0};
+                            jmt_state snapshot_d = {car_d, 0.0, 0.0};
+
+                            snapshot_s.s = fmod(snapshot_s.s, MAX_S);
+
+                            int path_decision = 0;
+
+                            if (fabs(car_d - get_lane_d(lane)) < 0.1)
+                                path_decision = decision(car_state_s, snapshot_s, lane, sensor_fusion);
+
+                            vector<jmt_state> jmt_v_s, jmt_v_d;
+
+                            lane += path_decision;
+
+                            tie(jmt_v_s, jmt_v_d) = generate_path(car_state_s, car_state_d, snapshot_s, lane,
+                                                                  sensor_fusion, max_speed);
+                            int horizon = int(jmt_v_s.size()) - path_size;
+
+
+                            vector<double> xy;
+                            jmt_state jmt_s, jmt_d;
+
+
+                            for (int i = 0; i < horizon; i++) {
+                                jmt_s = jmt_v_s[i];
+                                jmt_d = jmt_v_d[i];
+                                jmt_s.s = fmod(jmt_s.s, MAX_S);
+
+                                xy = getXY(jmt_s.s, jmt_d.s, map_waypoints_s, map_waypoints_x,
+                                           map_waypoints_y);
+                                next_x_vals.push_back(xy[0]);
+                                next_y_vals.push_back(xy[1]);
+
+                                car_state_s_v_next.push_back(jmt_s);
+                                car_state_d_v_next.push_back(jmt_d);
+
+                            }
+                            double max_distance = 0;
+                            for (int i = 1; i < 10; i++) {
+                                max_distance = fmax(
+                                        max_distance,
+                                        distance(next_x_vals[i - 1], next_y_vals[i - 1], next_x_vals[i],
+                                                 next_y_vals[i]));
+                            }
+                            max_speed = 50 * max_distance;
+
+                            car_state_s_v = car_state_s_v_next;
+                            car_state_d_v = car_state_d_v_next;
+
+
+
+                            // TODO: define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
+                            msgJson["next_x"] = next_x_vals;
+                            msgJson["next_y"] = next_y_vals;
+
+                            auto msg = "42[\"control\"," + msgJson.dump() + "]";
+
+                            //this_thread::sleep_for(chrono::milliseconds(1000));
+                            ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
+
+                        }
+                    } else {
+                        // Manual driving
+                        std::string msg = "42[\"manual\",{}]";
+                        ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
+                    }
+                }
+            });
+
+    // We don't need this since we're not using HTTP but if it's removed the
+    // program
+    // doesn't compile :-(
+    h.onHttpRequest([](uWS::HttpResponse *res, uWS::HttpRequest req, char *data,
+                       size_t, size_t) {
+        const std::string s = "<h1>Hello world!</h1>";
+        if (req.getUrl().valueLength == 1) {
+            res->end(s.data(), s.length());
+        } else {
+            // i guess this should be done more gracefully?
+            res->end(nullptr, 0);
+        }
+    });
+
+    h.onConnection([&h](uWS::WebSocket<uWS::SERVER> ws, uWS::HttpRequest req) {
+        std::cout << "Connected!!!" << std::endl;
+    });
+
+    h.onDisconnection([&h](uWS::WebSocket<uWS::SERVER> ws, int code,
+                           char *message, size_t length) {
+        ws.close();
+        std::cout << "Disconnected" << std::endl;
+    });
+
+    int port = 4567;
+    if (h.listen(port)) {
+        std::cout << "Listening to port " << port << std::endl;
+    } else {
+        std::cerr << "Failed to listen to port" << std::endl;
+        return -1;
+    }
+    h.run();
+}
