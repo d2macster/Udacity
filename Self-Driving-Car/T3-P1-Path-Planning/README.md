@@ -16,7 +16,7 @@ I am attaching the results showing that the path planning logic
 ![Status](status.jpg)
 
 You can find the link to the video recording in 
-![[driving_recording](https://img.youtube.com/vi/gqep2TO4BRM/0.jpg)](https://youtu.be/gqep2TO4BRM)
+[![driving_recording](https://img.youtube.com/vi/gqep2TO4BRM/0.jpg)](https://youtu.be/gqep2TO4BRM)
 
 ## Frenet coordinates and map wavepoints
 The original repository contains two helper functions to convert 
