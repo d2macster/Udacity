@@ -15,6 +15,9 @@ I am attaching the results showing that the path planning logic
 
 ![Status](status.jpg)
 
+You can find the link to the video recording in 
+![driving_recording](https://www.youtube.com/watch?v=gqep2TO4BRM)
+
 ## Frenet coordinates and map wavepoints
 The original repository contains two helper functions to convert 
 cartesian coordinates into frenet coordinates and back. The very first task 
