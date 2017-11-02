@@ -11,6 +11,9 @@ The task seem to appear pretty straightforward for a human to relate and underst
 However these seemingly simple conditions became a very interesting challenge 
 for implementation and a few very special cases to handle.
 
+I am attaching the results showing that the path planning logic 
+
+![Status](status.jpg)
 
 ## Frenet coordinates and map wavepoints
 The original repository contains two helper functions to convert 
@@ -92,3 +95,7 @@ enough distance between cars for this change, we will perform change.
 Once we determined the immediate target coordinates for our path, 
 i used jerk minimizing trajectory planner to compute the actual 
 `s, d` path. The implementation of this helper function is in `JMT.cpp`
+
+# Results
+I am attaching the results showing that the path planning logic 
+![Status](status.jpg)
