@@ -108,6 +108,8 @@ demonstrate different situations observed:
 * one  / multiple cars on the road
 * shadows thrown on the road
 * road / sidewalk
+
+
  ![um.gif animation](images/um_000028.png)
  ![umm.gif animation](images/um_000032.png)
  ![umm.gif animation](images/um_000041.png)
