@@ -40,6 +40,7 @@ def surfacePlot(data, label):
 
 
 if __name__ == '__main__':
+    # data format: (L2 regularization, Kernel initializer STDEV, IOU)
     IOU = [
         [1.00E-01, 1.00E-02, 0.952498116],
         [1.00E-06, 1.00E-02, 0.955517345],
@@ -50,6 +51,7 @@ if __name__ == '__main__':
         [1.00E-08, 1.00E-02, 0.9549213814],
         [1.00E-08, 1.00E-03, 0.9534359807],
         [1.00E-08, 1.00E-04, 0.9496271436]]
+    # data format: (L2 regularization, Kernel initializer STDEV, cross entropy loss)
     LOSS = [
         [1.00E-01, 1.00E-02, 0.05743462592],
         [1.00E-06, 1.00E-02, 0.05625329167],

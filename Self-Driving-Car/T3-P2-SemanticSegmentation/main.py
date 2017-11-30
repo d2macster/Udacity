@@ -7,8 +7,8 @@ import project_tests as tests
 import numpy as np
 import glob
 
-L2_REG = pow(10, -4.5)
-STDEV = pow(10, -2.2)
+L2_REG = 1e-6
+STDEV = 1e-2
 KEEP_PROB = 0.5
 LEARNING_RATE = 0.5e-4
 EPOCHS = 60
