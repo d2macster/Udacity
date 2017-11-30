@@ -4,12 +4,14 @@ import helper
 import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
+import numpy as np
+import glob
 
-L2_REG = 1e-3
-STDEV = 1e-2
+L2_REG = pow(10, -4.5)
+STDEV = pow(10, -2.2)
 KEEP_PROB = 0.5
 LEARNING_RATE = 0.5e-4
-EPOCHS = 50
+EPOCHS = 60
 BATCH_SIZE = 5
 
 IMAGE_SHAPE = (160, 576)
@@ -143,8 +145,8 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 tests.test_optimize(optimize)
 
 
-def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
-             correct_label, keep_prob, learning_rate, saver=None):
+def train_nn(sess, logits, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
+             correct_label, keep_prob, learning_rate, cv=False):
     """
     Train neural network and print out the loss during training.
     :param sess: TF Session
@@ -158,11 +160,19 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param keep_prob: TF Placeholder for dropout keep probability
     :param learning_rate: TF Placeholder for learning rate
     """
+
+    # For this work we will be also doing validation
+    # the idea is inspired by
+    # https://medium.com/@RecastAI/towards-an-augmented-dataset-cdf3b9b605ec
+    # Given that we perform constant data augmentation, we can get almost
+    # infinite sample of non-repeating images
+
     print("training")
-    # defining all placeholders
     for e in range(epochs):
         batch_loss = []
+        cv_iou = []
 
+        # TRAINING
         for images, gt_images in get_batches_fn(batch_size):
             opt_, loss = sess.run([train_op, cross_entropy_loss], feed_dict={
                 input_image: images,
@@ -172,10 +182,32 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
             })
             batch_loss.append(loss)
 
-        print("Epoch {} loss {}".format(e, 1.0 * sum(batch_loss) / len(batch_loss)))
-        if saver is not None and (e + 1) % 10 == 0:
-            print("Saving model checkpoint")
-            saver.save(sess, "{}/{}.chpt".format(MODELS_DIR, e))
+        print("Epoch {} loss {}".format(e, np.average(batch_loss)))
+
+        # CV
+        if cv and (e <= 3 or e == (epochs - 1) or (e + 1) % 10 == 0):
+            for images, gt_images in get_batches_fn(1):
+                im_softmax = sess.run(
+                    [tf.nn.softmax(logits)],
+                    {keep_prob: 1.0, input_image: [images[0]]})
+                im_softmax = im_softmax[0]
+                vfunc = np.vectorize(lambda x: 1 if x > 1.0/NUM_CLASSES else 0)
+                im_softmax = vfunc(im_softmax)
+
+                intersection = 0
+                union = 0
+                for c_id in range(NUM_CLASSES):
+                    predictions = im_softmax[:,c_id].reshape(-1)
+                    labels = gt_images[0][:,:,c_id].reshape(-1)
+
+                    i_set = np.logical_and(predictions, labels)
+                    u_set = np.logical_or(predictions, labels)
+                    intersection += (i_set == True).sum()
+                    union += (u_set == True).sum()
+                iou = 1.0*intersection / union
+                cv_iou.append(iou)
+
+            print("Epoch {} cv {}".format(e, np.average(cv_iou)))
 
 
 tests.test_train_nn(train_nn)
@@ -189,43 +221,35 @@ def run():
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(DATA_DIR)
 
-    # OPTIONAL: Train and Inference on the cityscapes dataset instead of the Kitti dataset.
-    # You'll need a GPU with at least 10 teraFLOPS to train on.
-    #  https://www.cityscapes-dataset.com/
+    with tf.Session() as sess:
+        # Path to vgg model
+        vgg_path = os.path.join(DATA_DIR, 'vgg')
 
-    # with tf.Session() as sess:
-    #     # Path to vgg model
-    #     vgg_path = os.path.join(DATA_DIR, 'vgg')
-    #
-    #     correct_label = tf.placeholder(tf.int32, [None, None, None, NUM_CLASSES], name='correct_label')
-    #     learning_rate = tf.placeholder(tf.float32, name='learning_rate')
-    #
-    #     # Create function to get batches
-    #     # returns images and labels
-    #     get_batches_fn = helper.gen_batch_function(os.path.join(DATA_DIR, 'data_road/training'), IMAGE_SHAPE)
-    #
-    #     # OPTIONAL: Augment Images for better results
-    #     #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
-    #
-    #     image_input, keep_prob_layer, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
-    #     nn_last_layer = layers(layer3_out, layer4_out, layer7_out, NUM_CLASSES)
-    #
-    #     logits, train_op, cross_entropy_loss = optimize(nn_last_layer, correct_label, learning_rate, NUM_CLASSES)
-    #
-    #     sess.run(tf.global_variables_initializer())
-    #
-    #     saver = tf.train.Saver()
-    #
-    #     train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, train_op, cross_entropy_loss, image_input,
-    #              correct_label, keep_prob_layer, learning_rate, saver)
-    #
-    #     helper.save_inference_samples(RUNS_DIR, DATA_DIR, sess, IMAGE_SHAPE, logits, keep_prob_layer, image_input)
-    #
-    #     # OPTIONAL: Apply the trained model to a video
+        correct_label = tf.placeholder(tf.int32, [None, None, None, NUM_CLASSES], name='correct_label')
+        learning_rate = tf.placeholder(tf.float32, name='learning_rate')
 
+        # Create function to get batches
+        # returns images and labels
+        get_batches_fn = helper.gen_batch_function(os.path.join(DATA_DIR, 'data_road/training'), IMAGE_SHAPE)
 
-    # helper.make_a_movie("../runs/1511403593.5087388", 'video.mp4')
+        # added augmentation using imgaug library
+        image_input, keep_prob_layer, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
+        nn_last_layer = layers(layer3_out, layer4_out, layer7_out, NUM_CLASSES)
 
+        logits, train_op, cross_entropy_loss = optimize(nn_last_layer, correct_label, learning_rate, NUM_CLASSES)
+
+        sess.run(tf.global_variables_initializer())
+
+        train_nn(sess, logits, EPOCHS, BATCH_SIZE, get_batches_fn, train_op, cross_entropy_loss, image_input,
+                 correct_label, keep_prob_layer, learning_rate, False)
+
+        helper.save_inference_samples(RUNS_DIR, DATA_DIR, sess, IMAGE_SHAPE, logits, keep_prob_layer, image_input)
+
+    # generating movie from test images
+    for r_data in glob.glob("{}/*".format(RUNS_DIR)):
+        movie_path = "{}.mp4".format(r_data)
+        helper.make_a_movie(r_data, movie_path)
+        print("processed {}".format(r_data))
 
 if __name__ == '__main__':
     run()

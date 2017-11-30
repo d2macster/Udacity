@@ -1,14 +1,17 @@
 # Semantic Segmentation
-### Introduction
-In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
-
+### Udacity Self Driving Car Engineer Semantic Segmentation project: overview
+The goals for this project are:
+ * to build fully convolutional neural network in Tensorflow using VGG16 network pre-trained on ImageNet as an encoder
+ * train this network using labeled data coming from a front facing camera on a car; data 
+ will come in pairs : street view and labels marking road / non-road pixels
+ * apply trained model to detect and mark pixels corresponding to road on 
+ previously unseen images
+ #### Results
+ KITTI road segmentation results, split into two distinct movie stories
+ ![um.gif animation](images/um.gif)
+ ![umm.gif animation](images/umm.gif)
 ### Setup
-##### Frameworks and Packages
-Make sure you have the following is installed:
- - [Python 3](https://www.python.org/)
- - [TensorFlow](https://www.tensorflow.org/)
- - [NumPy](http://www.numpy.org/)
- - [SciPy](https://www.scipy.org/)
+
 ##### Dataset
 Download the [Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php) from [here](http://www.cvlibs.net/download.php?file=data_road.zip).  Extract the dataset in the `data` folder.  This will create the folder `data_road` with all the training a test images.
 

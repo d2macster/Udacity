@@ -16,6 +16,8 @@ import cv2
 
 ia.seed(int(time.time()))
 
+# augmentation ideas were inspired after reading
+# https://github.com/aleju/imgaug
 augmentation_seq = iaa.Sequential([
     iaa.Crop(px=(0, 30), name="Cropper"),  # crop images from each side by 0 to 30px (randomly chosen)
     iaa.Fliplr(0.5, name="Flipper"),
@@ -28,10 +30,6 @@ augmentation_seq = iaa.Sequential([
                rotate=(-10, 10),
                name="Affine")
 ])
-
-
-# augmentation ideas were inspired after reading
-# https://github.com/aleju/imgaug
 
 # change the activated augmenters for binary masks,
 # we only want to execute horizontal crop, flip and affine transformation
