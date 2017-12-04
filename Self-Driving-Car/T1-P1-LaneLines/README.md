@@ -1,68 +1,36 @@
-#**Finding Lane Lines on the Road** 
-<img src="laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
+# Finding Lane Lines on the Road
 
-When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
+## Udacity Self Driving Car Engineer: Finding Lane Lines on the Road project: overview
+The lines on the road show us where the lanes are. They act as our 
+ constant reference for where to steer the vehicle.  One 
+ of the first things we would like to do in developing a self-driving car 
+ is to automatically detect lane lines using an algorithm.
 
-In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
+In this project we are using opencv + python to perform the following steps:
+* convert the original image into its grey-scale representation
+* apply canny edge detection to the obtained grey-scale image
+* define area of interest on the image to filter out areas where 
+we expect to detect highway lanes. we assume that images are obtained from a 
+front-facing camera located in the middle of the dash board. The car will be
+ driving approximately in the middle of the lane
+* apply Hough Line Transform to the masked area of interest , and detect lanes
+* finally draw lines on top of highway lanes, and apply the algorithm to 
 
-**Step 1:** Getting setup with Python
+### Results
+At first we will demonstrate how algorithm performs on static images.
+This is a necessary tuning step before we apply this transform to a video.
 
-To do this project, you will need Python 3 along with the numpy, matplotlib, and OpenCV libraries, as well as Jupyter Notebook installed. 
+Original image             |  Lane detection
+:-------------------------:|:-------------------------:
+![whiteCurve](test_images/solidWhiteCurve.jpg)  |  ![whiteCurve](test_images_output/lanes_solidWhiteCurve.jpg)
+![whiteRight](test_images/solidWhiteRight.jpg)  | ![whiteCurve](test_images_output/lanes_solidWhiteCurve.jpg)
+![yellowCurve](test_images/solidYellowCurve.jpg) | ![yellowCurve](test_images_output/lanes_solidYellowCurve.jpg)
+![yellowCurve2](test_images/solidYellowCurve2.jpg) | ![yellowCurve2](test_images_output/lanes_solidYellowCurve2.jpg)
+![yellowLeft](test_images/solidYellowLeft.jpg) | ![yellowLeft](test_images_output/lanes_solidYellowLeft.jpg)
+![whiteSwitch](test_images/whiteCarLaneSwitch.jpg) | ![whiteSwitch](test_images_output/lanes_whiteCarLaneSwitch.jpg)
 
-We recommend downloading and installing the Anaconda Python 3 distribution from Continuum Analytics because it comes prepackaged with many of the Python dependencies you will need for this and future projects, makes it easy to install OpenCV, and includes Jupyter Notebook.  Beyond that, it is one of the most common Python distributions used in data analytics and machine learning, so a great choice if you're getting started in the field.
 
-Choose the appropriate Python 3 Anaconda install package for your operating system <A HREF="https://www.continuum.io/downloads" target="_blank">here</A>.   Download and install the package.
-
-If you already have Anaconda for Python 2 installed, you can create a separate environment for Python 3 and all the appropriate dependencies with the following command:
-
-`>  conda create --name=yourNewEnvironment python=3 anaconda`
-
-`>  source activate yourNewEnvironment`
-
-**Step 2:** Installing OpenCV
-
-Once you have Anaconda installed, first double check you are in your Python 3 environment:
-
-`>python`    
-`Python 3.5.2 |Anaconda 4.1.1 (x86_64)| (default, Jul  2 2016, 17:52:12)`  
-`[GCC 4.2.1 Compatible Apple LLVM 4.2 (clang-425.0.28)] on darwin`  
-`Type "help", "copyright", "credits" or "license" for more information.`  
-`>>>`   
-(Ctrl-d to exit Python)
-
-run the following commands at the terminal prompt to get OpenCV:
-
-`> pip install pillow`  
-`> conda install -c https://conda.anaconda.org/menpo opencv3`
-
-then to test if OpenCV is installed correctly:
-
-`> python`  
-`>>> import cv2`  
-`>>>`  
-(Ctrl-d to exit Python)
-
-**Step 3:** Installing moviepy  
-
-We recommend the "moviepy" package for processing video in this project (though you're welcome to use other packages if you prefer).  
-
-To install moviepy run:
-
-`>pip install moviepy`  
-
-and check that the install worked:
-
-`>python`  
-`>>>import moviepy`  
-`>>>`  
-(Ctrl-d to exit Python)
-
-**Step 4:** Opening the code in a Jupyter Notebook
-
-You will complete this project in a Jupyter notebook.  If you are unfamiliar with Jupyter Notebooks, check out <A HREF="https://www.packtpub.com/books/content/basics-jupyter-notebook-and-python" target="_blank">Cyrille Rossant's Basics of Jupyter Notebook and Python</A> to get started.
-
-Jupyter is an ipython notebook where you can run blocks of code and see results interactively.  All the code for this project is contained in a Jupyter notebook. To start Jupyter in your browser, run the following command at the terminal prompt (be sure you're in your Python 3 environment!):
-
-`> jupyter notebook`
-
-A browser window will appear showing the contents of the current directory.  Click on the file called "P1.ipynb".  Another browser window will appear displaying the notebook.  Follow the instructions in the notebook to complete the project.  
+Original video             |  Lane detection video
+:-------------------------:|:-------------------------:
+[![yellowLane](https://img.youtube.com/vi/YpwzumuZIQ4/0.jpg)](https://youtu.be/YpwzumuZIQ4) | [![yellowLane](https://img.youtube.com/vi/yBHEQAlq6eE/0.jpg)](hhttps://youtu.be/yBHEQAlq6eE)
+[![whiteLane](https://img.youtube.com/vi/gKVAncmPWnA/0.jpg)](https://youtu.be/gKVAncmPWnA)  | [![whiteLane](https://img.youtube.com/vi/G3M5t6sOvzc/0.jpg)](https://youtu.be/G3M5t6sOvzc)
